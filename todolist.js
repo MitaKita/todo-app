@@ -1,5 +1,3 @@
-var todoItemList;
-
 var addButtonName = 'addButton';
 var editButtonName = 'editButton';
 var clearButtonName = 'clearButton';
@@ -31,9 +29,7 @@ function hasTodoList() {
 }
 
 function getTodosFromLocalStorage() {
-  if (!todoItemList) {
-    todoItemList = localStorage.getItem('todos');
-  }
+  var todoItemList = localStorage.getItem('todos');
   return todoItemList ? JSON.parse(todoItemList) : [];
 }
 
@@ -61,7 +57,9 @@ function buildListItem(todo) {
                     onclick="handleUpdateTime('${todo.id}')">
                 ${todo.estimate} / ${todo.timeSpent}
               </span>
-              <span class="badge badge-remove" title="Remove item">x</span>
+              <span class="badge badge-remove"
+                    title="Remove item"
+                    onclick="handleRemove('${todo.id}')">x</span>
             </span>
           </li>`
 }
@@ -95,6 +93,18 @@ function cancelEditTodoItem() {
   showElement(clearButtonName);
 }
 
+function handleRemove(id) {
+  removeFromLocalStorage(getIndexFromId(id));
+  init();
+}
+
+function getIndexFromId(id) {
+  var todoList = getTodosFromLocalStorage();
+  return todoList.findIndex((element) => {
+    return element.id === id;
+  });
+}
+
 function saveTodoItem() {
   if (!isValid()) {
     return;
@@ -102,13 +112,11 @@ function saveTodoItem() {
 
   saveToLocalStorage();
 
-  setVal(descriptionName, '');
-  setVal(estimateName, '');
+  setValue(descriptionName, '');
+  setValue(estimateName, '');
 
   init();
 }
-
-
 
 function isValid() {
   if (!getValue(descriptionName)) {
@@ -126,6 +134,12 @@ function isValid() {
 function saveToLocalStorage() {
   var todos = getTodosFromLocalStorage();
   todos.push(getNewTodo());
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+function removeFromLocalStorage(index) {
+  var todos = getTodosFromLocalStorage();
+  todos.splice(index, 1);
   localStorage.setItem('todos', JSON.stringify(todos));
 }
 
