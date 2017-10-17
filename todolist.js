@@ -9,6 +9,10 @@ var timeSpentName = 'todoTimeSpent';
 
 var timeSpentGroupName = 'timeSpentFormGroup';
 
+var descriptionErrorName = 'todoDescriptionError';
+var estimateErrorName = 'todoEstimateError';
+var timeSpentErrorName = 'todoTimeSpentError'
+
 var editedTodoItemId;
 
 function init() {
@@ -36,10 +40,11 @@ function getTodosFromLocalStorage() {
 }
 
 function createTodoList() {
-  $('#todoList').html(getTodoListHtml(getTodosFromLocalStorage()));
+  $('#todoList').html(getTodoListHtml());
 }
 
-function getTodoListHtml(todos) {
+function getTodoListHtml() {
+  var todos = getTodosFromLocalStorage();
   var innerHtml = '<ul class="list-group">';
 
   for (var i = 0; i < todos.length; i++) {
@@ -52,7 +57,7 @@ function getTodoListHtml(todos) {
 
 function buildListItem(todo) {
   return `<li class="list-group-item justify-content-between todo-list-item"
-              onclick="handleUpdateTime('${todo.id}')">
+              onclick="handleListItemClick('${todo.id}')">
             ${todo.description}
             <span>
               <span class="${getBadgeClasses(todo)}"
@@ -73,11 +78,13 @@ function getBadgeClasses(todo) {
   return 'badge badge-done'
 }
 
-function handleUpdateTime(todoId) {
+function handleListItemClick(todoId) {
   editedTodoItemId = todoId;
 
   var todoList = getTodosFromLocalStorage();
   var updateItem = $.grep(todoList, function(item) { return item.id === todoId })[0];
+  
+  if (!updateItem) return;
 
   setValue(descriptionName, updateItem.description);
   setValue(estimateName, updateItem.estimate);
@@ -147,21 +154,28 @@ function saveEditedTodoItem() {
 }
 
 function isValid(checkTimeSpent = false) {
-  if (!getValue(descriptionName)) {
-    alert('Please, add a description');
-    return false;
+  var isOk = true;
+  
+  isOk |= checkElement(descriptionName, descriptionErrorName);
+  isOk |= checkElement(estimateName, estimateErrorName);
+
+  if (checkTimeSpent) {
+    isOk |= checkElement(timeSpentName, timeSpentErrorName);
   }
 
-  if (!getValue(estimateName)) {
-    alert('Please, add a time estimate for the task');
-    return false;
-  }
+  return isOk;
+}
 
-  if (checkTimeSpent && !getValue(timeSpentName)) {
-    alert('Please, add a value for amount of time spent on the task');
-    return false;
+function checkElement(elementName, errorName) {
+  var isOk = getValue(elementName);
+
+  if (!isOk) {
+    showElement(errorName);
+  } else {
+    hideElement(errorName);
   }
-  return true;
+  
+  return isOk;
 }
 
 function saveToLocalStorage(todos) {

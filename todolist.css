@@ -65,6 +65,10 @@ body {
   background-color: #c9302c;
 }
 
+.error-message {
+  color: #c9302c;
+}
+
 .not-visible {
   display: none;
 }
