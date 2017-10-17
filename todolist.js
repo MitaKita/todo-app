@@ -9,6 +9,8 @@ var timeSpentName = 'todoTimeSpent';
 
 var timeSpentGroupName = 'timeSpentFormGroup';
 
+var editedTodoItemId;
+
 function init() {
   buildTodoList();
 }
@@ -49,12 +51,12 @@ function getTodoListHtml(todos) {
 }
 
 function buildListItem(todo) {
-  return `<li class="list-group-item justify-content-between todo-list-item">
+  return `<li class="list-group-item justify-content-between todo-list-item"
+              onclick="handleUpdateTime('${todo.id}')">
             ${todo.description}
             <span>
-              <span class="badge badge-estimate"
-                    title="Time to complete / Time spent"
-                    onclick="handleUpdateTime('${todo.id}')">
+              <span class="${getBadgeClasses(todo)}"
+                    title="Time to complete / Time spent">
                 ${todo.estimate} / ${todo.timeSpent}
               </span>
               <span class="badge badge-remove"
@@ -64,12 +66,19 @@ function buildListItem(todo) {
           </li>`
 }
 
+function getBadgeClasses(todo) {
+  if (todo.estimate > todo.timeSpent) {
+    return 'badge badge-estimate';
+  }
+  return 'badge badge-done'
+}
+
 function handleUpdateTime(todoId) {
-  console.log(typeof(todoId))
-  console.log(todoId);
+  editedTodoItemId = todoId;
+
   var todoList = getTodosFromLocalStorage();
   var updateItem = $.grep(todoList, function(item) { return item.id === todoId })[0];
-  console.log(updateItem)
+
   setValue(descriptionName, updateItem.description);
   setValue(estimateName, updateItem.estimate);
   setValue(timeSpentName, updateItem.timeSpent);
@@ -82,6 +91,10 @@ function handleUpdateTime(todoId) {
 }
 
 function cancelEditTodoItem() {
+  setInitialState();
+}
+
+function setInitialState() {
   setValue(descriptionName, '');
   setValue(estimateName, '');
   setValue(timeSpentName, '');
@@ -105,12 +118,14 @@ function getIndexFromId(id) {
   });
 }
 
-function saveTodoItem() {
+function saveNewTodoItem() {
   if (!isValid()) {
     return;
   }
 
-  saveToLocalStorage();
+  var todos = getTodosFromLocalStorage();
+  todos.push(getNewTodo());
+  saveToLocalStorage(todos);
 
   setValue(descriptionName, '');
   setValue(estimateName, '');
@@ -118,7 +133,20 @@ function saveTodoItem() {
   init();
 }
 
-function isValid() {
+function saveEditedTodoItem() {
+  if (!isValid()) {
+    return;
+  }
+
+  var todos = editTodoItem();
+  saveToLocalStorage(todos);
+
+  setInitialState();
+
+  init();
+}
+
+function isValid(checkTimeSpent = false) {
   if (!getValue(descriptionName)) {
     alert('Please, add a description');
     return false;
@@ -128,12 +156,15 @@ function isValid() {
     alert('Please, add a time estimate for the task');
     return false;
   }
+
+  if (checkTimeSpent && !getValue(timeSpentName)) {
+    alert('Please, add a value for amount of time spent on the task');
+    return false;
+  }
   return true;
 }
 
-function saveToLocalStorage() {
-  var todos = getTodosFromLocalStorage();
-  todos.push(getNewTodo());
+function saveToLocalStorage(todos) {
   localStorage.setItem('todos', JSON.stringify(todos));
 }
 
@@ -152,6 +183,15 @@ function getNewTodo() {
   };
 }
 
+function getCurrentTodoValue(id) {
+  return {
+    id: id,
+    description: getValue(descriptionName),
+    estimate: getValue(estimateName),
+    timeSpent: getValue(timeSpentName)
+  };
+}
+
 function getValue(id) {
   return $(`#${id}`).val();
 }
@@ -166,4 +206,11 @@ function hideElement(id) {
 
 function showElement(id) {
   $(`#${id}`).removeClass('not-visible');
+}
+
+function editTodoItem() {
+  var todos = getTodosFromLocalStorage();
+  var index = getIndexFromId(editedTodoItemId);
+  todos[index] = getCurrentTodoValue(editedTodoItemId);
+  return todos;
 }
