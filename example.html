@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Javascript App Example</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="example.css">
+  </head>
+  <body onload="init()">
+    <div class="container">
+      <div class="heading">
+        To Do List
+      </div>
+      <div id="formWrapper">
+        <div class="form-group">
+          <label for="todoDescription">Description</label>
+          <input type="text" class="form-control" id="todoDescription" placeholder="Describe the task to do">
+        </div>
+        <div class="form-group">
+          <label for="todoEstimate">Estimated time (hours)</label>
+          <input type="number" class="form-control" id="todoEstimate">
+        </div>
+        <button class="btn btn-primary" onclick="saveTodoItem()">Add</button>
+        <button class="btn btn-primary" onclick="clearAll()">Clear All</button>
+      </div>
+      <div class="row">
+        <div class="col-md-6 list-wrapper">
+          <div id="todoList">
+          </div>
+        </div>
+        <div class="col-md-6 donut-chart-wrapper">
+          <div class="donut-chart">
+            <svg id="donutChart">
+              
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <p>
+          &copy maritakontio.com
+        </p>
+      </div>
+    </div>
+
+<!-- Trigger the modal with a button -->
+<!--<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>-->
+
+<!-- Modal -->
+    <div id="messageModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Message</h4>
+          </div>
+          <div class="modal-body" id="message">
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://chancejs.com/chance.min.js"></script>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="donutchart.js"></script>
+    <script src="todolist.js"></script>
+
+  </body>
+</html> 
