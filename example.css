@@ -23,6 +23,46 @@ body {
   padding: 1em;
 }
 
-button {
+.add-todo-button,
+.clear-all-button {
   width: 12em;
 }
+
+.todo-list-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.todo-list-badges {
+
+}
+
+.badge-estimate {
+  background-color: #3a87ad;
+}
+.badge-estimate:hover {
+  cursor: pointer;
+  background-color: #2d6987;
+}
+
+.badge-spent {
+  background-color: #468847;
+}
+.badge-spent:hover {
+  cursor: pointer;
+  background-color: #356635;
+}
+
+.badge-remove {
+  background-color: #d9534f;
+}
+
+.badge-remove:hover {
+  cursor: pointer;
+  background-color: #c9302c;
+}
+
+.not-visible {
+  display: none;
+}
+

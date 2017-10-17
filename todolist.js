@@ -1,6 +1,18 @@
+var todoItemList;
+
+var addButtonName = 'addButton';
+var editButtonName = 'editButton';
+var clearButtonName = 'clearButton';
+var cancelButtonName = 'cancelButton';
+
+var descriptionName = 'todoDescription';
+var estimateName = 'todoEstimate';
+var timeSpentName = 'todoTimeSpent';
+
+var timeSpentGroupName = 'timeSpentFormGroup';
+
 function init() {
   buildTodoList();
-  initDonutChart();
 }
 
 function clearAll() {
@@ -19,19 +31,14 @@ function hasTodoList() {
 }
 
 function getTodosFromLocalStorage() {
-  var todos = localStorage.getItem('todos');
-  return todos ? JSON.parse(todos) : [];
+  if (!todoItemList) {
+    todoItemList = localStorage.getItem('todos');
+  }
+  return todoItemList ? JSON.parse(todoItemList) : [];
 }
 
 function createTodoList() {
-  var todoListElement = getTodoListElement();
-  todoListElement.innerHTML = getTodoListHtml(getTodosFromLocalStorage());
-}
-
-function getTodoListElement() {
-  var todoListElement = document.getElementById('todoList');
-  todoListElement.innerHTML = '';
-  return todoListElement;
+  $('#todoList').html(getTodoListHtml(getTodosFromLocalStorage()));
 }
 
 function getTodoListHtml(todos) {
@@ -46,10 +53,46 @@ function getTodoListHtml(todos) {
 }
 
 function buildListItem(todo) {
-  return `<li class="list-group-item justify-content-between">
+  return `<li class="list-group-item justify-content-between todo-list-item">
             ${todo.description}
-            <span class="badge badge-default badge-pill">${todo.estimate}</span>
+            <span>
+              <span class="badge badge-estimate"
+                    title="Time to complete / Time spent"
+                    onclick="handleUpdateTime('${todo.id}')">
+                ${todo.estimate} / ${todo.timeSpent}
+              </span>
+              <span class="badge badge-remove" title="Remove item">x</span>
+            </span>
           </li>`
+}
+
+function handleUpdateTime(todoId) {
+  console.log(typeof(todoId))
+  console.log(todoId);
+  var todoList = getTodosFromLocalStorage();
+  var updateItem = $.grep(todoList, function(item) { return item.id === todoId })[0];
+  console.log(updateItem)
+  setValue(descriptionName, updateItem.description);
+  setValue(estimateName, updateItem.estimate);
+  setValue(timeSpentName, updateItem.timeSpent);
+
+  hideElement(addButtonName);
+  hideElement(clearButtonName);
+  showElement(editButtonName);
+  showElement(cancelButtonName);
+  showElement(timeSpentGroupName);
+}
+
+function cancelEditTodoItem() {
+  setValue(descriptionName, '');
+  setValue(estimateName, '');
+  setValue(timeSpentName, '');
+
+  hideElement(editButtonName);
+  hideElement(cancelButtonName);
+  hideElement(timeSpentGroupName);
+  showElement(addButtonName);
+  showElement(clearButtonName);
 }
 
 function saveTodoItem() {
@@ -57,8 +100,10 @@ function saveTodoItem() {
     return;
   }
 
-  saveToLocalStorage(todoDescription);  
-  document.getElementById('todoDescription').value = '';
+  saveToLocalStorage();
+
+  setVal(descriptionName, '');
+  setVal(estimateName, '');
 
   init();
 }
@@ -66,12 +111,12 @@ function saveTodoItem() {
 
 
 function isValid() {
-  if (!getDescription()) {
+  if (!getValue(descriptionName)) {
     alert('Please, add a description');
     return false;
   }
 
-  if (!getEstimate()) {
+  if (!getValue(estimateName)) {
     alert('Please, add a time estimate for the task');
     return false;
   }
@@ -87,15 +132,24 @@ function saveToLocalStorage() {
 function getNewTodo() {
   return {
     id: chance.guid(),
-    description: getDescription(),
-    estimate: getEstimate()
+    description: getValue(descriptionName),
+    estimate: getValue(estimateName),
+    timeSpent: 0
   };
 }
 
-function getDescription() {
-  return document.getElementById('todoDescription').value.trim();
+function getValue(id) {
+  return $(`#${id}`).val();
 }
 
-function getEstimate() {
-  return document.getElementById('todoEstimate').value;
+function setValue(id, value) {
+  $(`#${id}`).val(value);
+}
+
+function hideElement(id) {
+  $(`#${id}`).addClass('not-visible');
+}
+
+function showElement(id) {
+  $(`#${id}`).removeClass('not-visible');
 }
