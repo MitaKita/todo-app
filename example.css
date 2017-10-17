@@ -29,6 +29,7 @@ body {
 }
 
 .todo-list-item {
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
 }
@@ -41,7 +42,6 @@ body {
   background-color: #3a87ad;
 }
 .badge-estimate:hover {
-  cursor: pointer;
   background-color: #2d6987;
 }
 
@@ -49,7 +49,6 @@ body {
   background-color: #468847;
 }
 .badge-spent:hover {
-  cursor: pointer;
   background-color: #356635;
 }
 
