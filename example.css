@@ -34,8 +34,12 @@ body {
   justify-content: space-between;
 }
 
-.todo-list-badges {
+.badge-done {
+  background-color: #468847;
+}
 
+.badge-done:hover {
+  background-color: #356635;
 }
 
 .badge-estimate {
