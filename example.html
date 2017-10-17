@@ -24,9 +24,9 @@
           <label for="todoTimeSpent">Time spent (hours)</label>
           <input type="number" class="form-control" id="todoTimeSpent">
         </div>
-        <button class="btn btn-primary add-todo-button" onclick="saveTodoItem()" id="addButton">Add</button>
-        <button class="btn btn-primary clear-all-button" onclick="clearAll()" id="clearButton">Clear All</button>
-        <button class="btn btn-primary add-todo-button not-visible" onclick="editTodoItem()" id="editButton">Edit</button>
+        <button class="btn btn-primary add-todo-button" onclick="saveNewTodoItem()" id="addButton">Add</button>
+        <button class="btn btn-primary clear-all-button" onclick="clearAll()" id="clearButton">Remove all</button>
+        <button class="btn btn-primary add-todo-button not-visible" onclick="saveEditedTodoItem()" id="editButton">Edit</button>
         <button class="btn btn-primary add-todo-button not-visible" onclick="cancelEditTodoItem()" id="cancelButton">Cancel</button>
       </div>
       <div class="row">
