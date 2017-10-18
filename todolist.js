@@ -1,21 +1,3 @@
-var todoListName = 'todoList';
-var addButtonName = 'addButton';
-var editButtonName = 'editButton';
-var clearButtonName = 'clearButton';
-var cancelButtonName = 'cancelButton';
-
-var descriptionName = 'todoDescription';
-var estimateName = 'todoEstimate';
-var timeSpentName = 'todoTimeSpent';
-
-var timeSpentGroupName = 'timeSpentFormGroup';
-
-var descriptionErrorName = 'todoDescriptionError';
-var estimateErrorName = 'todoEstimateError';
-var timeSpentErrorName = 'todoTimeSpentError';
-
-var editedTodoItemId;
-
 function init() {
   buildTodoList();
 }
@@ -39,7 +21,7 @@ function hasTodoList() {
 }
 
 function createTodoList() {
-  $('#todoList').html(getTodoListHtml());
+  get(todoListName).html(getTodoListHtml());
 }
 
 function getTodoListHtml() {
