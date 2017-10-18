@@ -1,4 +1,4 @@
-# todo-app
+# To Do List
 App is available at http://maritakontio.com/todo/todolist.html.
 
 This app can:
