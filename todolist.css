@@ -2,9 +2,11 @@ body {
   font-family: sans-serif;
   padding: 1em;
 }
+
 .form-wrapper {
   width: 45em;
 }
+
 .footer {
   position: absolute;
   right: 0;
@@ -13,6 +15,7 @@ body {
   background-color: #efefef;
   text-align: center;
 }
+
 .heading {
   font-size: 2em;
   font-weight: 700;
@@ -46,6 +49,7 @@ body {
 .badge-estimate {
   background-color: #3a87ad;
 }
+
 .badge-estimate:hover {
   background-color: #2d6987;
 }
@@ -53,6 +57,7 @@ body {
 .badge-spent {
   background-color: #468847;
 }
+
 .badge-spent:hover {
   background-color: #356635;
 }
