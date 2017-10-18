@@ -82,6 +82,7 @@ function getBadgeClasses(todo) {
 }
 
 function handleListItemClick(todoId) {
+  clearErrors();
   indicateListItemSelected(todoId);
   editedTodoItemId = todoId;
 
@@ -183,6 +184,12 @@ function checkElement(elementName, errorName) {
   }
   
   return isOk;
+}
+
+function clearErrors() {
+  hideElement(descriptionErrorName);
+  hideElement(estimateErrorName);
+  hideElement(timeSpentErrorName);
 }
 
 function getNewTodo() {
