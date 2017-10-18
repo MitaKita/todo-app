@@ -154,6 +154,7 @@ function saveEditedTodoItem() {
 
   setInitialState();
 
+  updateDonut();
   init();
 }
 
@@ -193,12 +194,7 @@ function clearErrors() {
 }
 
 function getNewTodo() {
-  return {
-    id: getNewId(),
-    description: getValue(descriptionName),
-    estimate: getValue(estimateName),
-    timeSpent: getValue(timeSpentName)
-  };
+  return getCurrentTodoValue(getNewId());
 }
 
 function getNewId() {

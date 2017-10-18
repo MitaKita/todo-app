@@ -6,11 +6,20 @@ var donutSegmentName = 'donutSegment';
 var circumference = 50 * 2 * Math.PI;
 var strokeDashOffset = circumference * 0.5;
 
+var currentTodoItem;
+
 function hideDonut() {
   get(donutChartWrapperName).addClass('not-visible')
 }
 
+function updateDonut() {
+  if (currentTodoItem) {
+    showDonut(getTodoItem(currentTodoItem.id));
+  }
+}
+
 function showDonut(todoItem) {
+  currentTodoItem = todoItem;
   get(donutTitleName).html(`Progress for: ${todoItem.description}`);
   get(donutChartWrapperName).removeClass('not-visible');
 
