@@ -34,7 +34,12 @@ function showDonut(todoItem) {
 }
 
 function getDonutText(todoItem) {
-  return `${Math.round(todoItem.timeSpent / todoItem.estimate * 100)}%`;
+  return `${getPercentageValue(todoItem)}%`;
+}
+
+function getPercentageValue(todoItem) {
+  var rawValue = Math.round(todoItem.timeSpent / todoItem.estimate * 100);
+  return (rawValue > 100) ? 100 : rawValue;
 }
 
 function getStrokeDashArray(todoItem) {
