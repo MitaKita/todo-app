@@ -205,8 +205,8 @@ function getCurrentTodoValue(id) {
   return {
     id: id,
     description: getValue(descriptionName),
-    estimate: getValue(estimateName),
-    timeSpent: getValue(timeSpentName)
+    estimate: Number(getValue(estimateName)),
+    timeSpent: Number(getValue(timeSpentName))
   };
 }
 
