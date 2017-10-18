@@ -87,7 +87,7 @@ function handleListItemClick(todoId) {
   editedTodoItemId = todoId;
 
   var todoList = getTodosFromLocalStorage();
-  var updateItem = $.grep(todoList, function(item) { return item.id === todoId })[0];
+  var updateItem = getTodoItem(todoId);
   
   if (!updateItem) return;
 
