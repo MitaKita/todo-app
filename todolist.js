@@ -86,6 +86,10 @@ function handleListItemClick(todoId) {
   
   if (!updateItem) return;
 
+  setEditingState();
+}
+
+function setEditingState() {
   setValue(descriptionName, updateItem.description);
   setValue(estimateName, updateItem.estimate);
   setValue(timeSpentName, updateItem.timeSpent);
@@ -153,14 +157,21 @@ function saveEditedTodoItem() {
   init();
 }
 
+function editTodoItem() {
+  var todos = getTodosFromLocalStorage();
+  var index = getIndexFromId(editedTodoItemId);
+  todos[index] = getCurrentTodoValue(editedTodoItemId);
+  return todos;
+}
+
 function isValid(checkTimeSpent = false) {
   var isOk = true;
   
-  isOk |= checkElement(descriptionName, descriptionErrorName);
-  isOk |= checkElement(estimateName, estimateErrorName);
+  isOk &= checkElement(descriptionName, descriptionErrorName);
+  isOk &= checkElement(estimateName, estimateErrorName);
 
   if (checkTimeSpent) {
-    isOk |= checkElement(timeSpentName, timeSpentErrorName);
+    isOk &= checkElement(timeSpentName, timeSpentErrorName);
   }
 
   return isOk;
@@ -220,11 +231,4 @@ function hideElement(id) {
 
 function showElement(id) {
   $(`#${id}`).removeClass('not-visible');
-}
-
-function editTodoItem() {
-  var todos = getTodosFromLocalStorage();
-  var index = getIndexFromId(editedTodoItemId);
-  todos[index] = getCurrentTodoValue(editedTodoItemId);
-  return todos;
 }
