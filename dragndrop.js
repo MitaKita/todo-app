@@ -17,17 +17,11 @@ function drop(event) {
 function move(sourceId, targetId, before) {
   var movedItem = getTodoItem(sourceId);
 
-  removeSourceFromTodos(sourceId).then(() => {
-    var targetIndex = getIndexFromId(targetId);
-
-    insertMovedItem(movedItem, targetIndex, before).then(() => {
+  removeFromLocalStorage(getIndexFromId(sourceId)).then(() => {
+    insertMovedItem(movedItem, getIndexFromId(targetId), before).then(() => {
       init();
     })
   });
-}
-
-function removeSourceFromTodos(sourceId) {
-  return removeFromLocalStorage(getIndexFromId(sourceId));
 }
 
 function insertMovedItem(movedItem, targetIndex, before) {
