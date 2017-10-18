@@ -9,7 +9,8 @@ var strokeDashOffset = circumference * 0.5;
 var currentTodoItem;
 
 function hideDonut() {
-  get(donutChartWrapperName).addClass('not-visible')
+  hideElement(donutChartWrapperName);
+  hideElement(donutTitleName);
 }
 
 function updateDonut() {
