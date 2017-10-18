@@ -1,3 +1,5 @@
+var todoListName = 'todoList';
+var todoListKey = 'todos';
 var addButtonName = 'addButton';
 var editButtonName = 'editButton';
 var clearButtonName = 'clearButton';
@@ -21,7 +23,7 @@ function init() {
 
 function clearAll() {
   localStorage.removeItem('todos')
-  $('#todoList').html('');
+  get(todoListName).html('');
   hideDonut();
 }
 
@@ -36,7 +38,7 @@ function hasTodoList() {
 }
 
 function getTodosFromLocalStorage() {
-  var todoItemList = localStorage.getItem('todos');
+  var todoItemList = localStorage.getItem(todoListKey);
   return todoItemList ? JSON.parse(todoItemList) : [];
 }
 
@@ -144,10 +146,7 @@ function saveNewTodoItem() {
   todos.push(getNewTodo());
   saveToLocalStorage(todos);
 
-
-  setValue(descriptionName, '');
-  setValue(estimateName, '');
-
+  setInitialState();
   init();
 }
 
@@ -194,13 +193,13 @@ function checkElement(elementName, errorName) {
 }
 
 function saveToLocalStorage(todos) {
-  localStorage.setItem('todos', JSON.stringify(todos));
+  localStorage.setItem(todoListKey, JSON.stringify(todos));
 }
 
 function removeFromLocalStorage(index) {
   var todos = getTodosFromLocalStorage();
   todos.splice(index, 1);
-  localStorage.setItem('todos', JSON.stringify(todos));
+  localStorage.setItem(todoListKey, JSON.stringify(todos));
 }
 
 function getNewTodo() {
@@ -235,4 +234,8 @@ function hideElement(id) {
 
 function showElement(id) {
   $(`#${id}`).removeClass('not-visible');
+}
+
+function get(id) {
+  return $(`#${id}`);
 }
