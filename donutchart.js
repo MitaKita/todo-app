@@ -22,7 +22,7 @@ function updateDonut() {
 function showDonut(todoItem) {
   currentTodoItem = todoItem;
   get(donutTitleName).html(`Progress for: ${todoItem.description}`);
-  get(donutChartWrapperName).removeClass('not-visible');
+  showElement(donutChartWrapperName);
 
   var donutText = get(donutTextName).html(getDonutText(todoItem));
 
@@ -31,7 +31,7 @@ function showDonut(todoItem) {
     'stroke-dasharray': getStrokeDashArray(todoItem),
     'stroke-dashoffset': strokeDashOffset
   })
-  donutSegment.removeClass('not-visible')
+  showElement(donutSegmentName);
 }
 
 function getDonutText(todoItem) {
