@@ -1,5 +1,4 @@
 var todoListName = 'todoList';
-var todoListKey = 'todos';
 var addButtonName = 'addButton';
 var editButtonName = 'editButton';
 var clearButtonName = 'clearButton';
@@ -22,9 +21,11 @@ function init() {
 }
 
 function clearAll() {
-  localStorage.removeItem('todos')
-  get(todoListName).html('');
-  hideDonut();
+  if (confirm('Are you sure you want to delete all todo items?')) {
+    localStorage.removeItem('todos')
+    get(todoListName).html('');
+    hideDonut();
+  }
 }
 
 function buildTodoList() {
@@ -35,11 +36,6 @@ function buildTodoList() {
 
 function hasTodoList() {
   return getTodosFromLocalStorage() ? true : false;
-}
-
-function getTodosFromLocalStorage() {
-  var todoItemList = localStorage.getItem(todoListKey);
-  return todoItemList ? JSON.parse(todoItemList) : [];
 }
 
 function createTodoList() {
@@ -60,7 +56,11 @@ function getTodoListHtml() {
 
 function buildListItem(todo) {
   return `<li id="${todo.id}" class="list-group-item justify-content-between todo-list-item"
-              onclick="handleListItemClick('${todo.id}')">
+              onclick="handleListItemClick('${todo.id}')"
+              ondrop="drop(event)"
+              ondragover="allowDrop(event)"
+              draggable="true"
+              ondragstart="drag(event)">
             ${todo.description}
             <span>
               <span class="${getBadgeClasses(todo)}"
@@ -130,13 +130,6 @@ function handleRemove(id) {
   init();
 }
 
-function getIndexFromId(id) {
-  var todoList = getTodosFromLocalStorage();
-  return todoList.findIndex((element) => {
-    return element.id === id;
-  });
-}
-
 function saveNewTodoItem() {
   if (!isValid()) {
     return;
@@ -192,23 +185,17 @@ function checkElement(elementName, errorName) {
   return isOk;
 }
 
-function saveToLocalStorage(todos) {
-  localStorage.setItem(todoListKey, JSON.stringify(todos));
-}
-
-function removeFromLocalStorage(index) {
-  var todos = getTodosFromLocalStorage();
-  todos.splice(index, 1);
-  localStorage.setItem(todoListKey, JSON.stringify(todos));
-}
-
 function getNewTodo() {
   return {
-    id: chance.guid(),
+    id: getNewId(),
     description: getValue(descriptionName),
     estimate: getValue(estimateName),
     timeSpent: getValue(timeSpentName)
   };
+}
+
+function getNewId() {
+  return chance.guid();
 }
 
 function getCurrentTodoValue(id) {
@@ -234,4 +221,50 @@ function hideElement(id) {
 
 function showElement(id) {
   $(`#${id}`).removeClass('not-visible');
+}
+
+function loadDummyData() {
+  var todos = getTodosFromLocalStorage();
+  todos = addDummyData(todos);
+  saveToLocalStorage(todos);
+  init();
+}
+
+function addDummyData(todos) {
+  todos.push.apply(todos, getDummyData());
+  return todos;
+}
+function getDummyData() {
+  return [
+    {
+      id: getNewId(),
+      description: 'Write a book',
+      estimate: 200,
+      timeSpent: 30
+    },
+    {
+      id: getNewId(),
+      description: 'Build a house',
+      estimate: 300,
+      timeSpent: 40
+    },
+    {
+      id: getNewId(),
+      description: 'Drive across the country',
+      estimate: 80,
+      timeSpent: 30
+    },
+    {
+      id: getNewId(),
+      description: 'Watch a movie',
+      estimate: 1.5,
+      timeSpent: 0.5
+    },
+    {
+      id: getNewId(),
+      description: 'Do the dishes',
+      estimate: 0.5,
+      timeSpent: 0
+    }
+  ];
 }

@@ -83,3 +83,7 @@ body {
   stroke-dasharray: "0 314.15926535897932384626433832795";
   transition: stroke-dasharray 2s
 }
+
+.dummy-data-link {
+  font-weight: 800;
+}
