@@ -19,7 +19,8 @@ body {
   padding: 1em 0 1em 0;
 }
 
-.list-wrapper {
+.list-wrapper,
+.donut-chart-wrapper {
   padding: 1em;
 }
 
@@ -73,3 +74,12 @@ body {
   display: none;
 }
 
+.donut-text {
+  font-weight: bold;
+  font-size: 2em;
+}
+
+.donut-segment {
+  stroke-dasharray: "0 314.15926535897932384626433832795";
+  transition: stroke-dasharray 2s
+}

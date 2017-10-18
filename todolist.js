@@ -22,6 +22,7 @@ function init() {
 function clearAll() {
   localStorage.removeItem('todos')
   $('#todoList').html('');
+  hideDonut();
 }
 
 function buildTodoList() {
@@ -56,7 +57,7 @@ function getTodoListHtml() {
 }
 
 function buildListItem(todo) {
-  return `<li class="list-group-item justify-content-between todo-list-item"
+  return `<li id="${todo.id}" class="list-group-item justify-content-between todo-list-item"
               onclick="handleListItemClick('${todo.id}')">
             ${todo.description}
             <span>
@@ -79,6 +80,7 @@ function getBadgeClasses(todo) {
 }
 
 function handleListItemClick(todoId) {
+  indicateListItemSelected(todoId);
   editedTodoItemId = todoId;
 
   var todoList = getTodosFromLocalStorage();
@@ -87,6 +89,12 @@ function handleListItemClick(todoId) {
   if (!updateItem) return;
 
   setEditingState(updateItem);
+  showDonut(updateItem);
+}
+
+function indicateListItemSelected(id) {
+  $(`#${editedTodoItemId}`).removeClass('active');
+  $(`#${id}`).addClass('active');
 }
 
 function setEditingState(updateItem) {
@@ -98,7 +106,6 @@ function setEditingState(updateItem) {
   hideElement(clearButtonName);
   showElement(editButtonName);
   showElement(cancelButtonName);
-  showElement(timeSpentGroupName);
 }
 
 function cancelEditTodoItem() {
@@ -112,7 +119,6 @@ function setInitialState() {
 
   hideElement(editButtonName);
   hideElement(cancelButtonName);
-  hideElement(timeSpentGroupName);
   showElement(addButtonName);
   showElement(clearButtonName);
 }
@@ -165,15 +171,12 @@ function editTodoItem() {
   return todos;
 }
 
-function isValid(checkTimeSpent = false) {
+function isValid() {
   var isOk = true;
   
   isOk &= checkElement(descriptionName, descriptionErrorName);
   isOk &= checkElement(estimateName, estimateErrorName);
-
-  if (checkTimeSpent) {
-    isOk &= checkElement(timeSpentName, timeSpentErrorName);
-  }
+  isOk &= checkElement(timeSpentName, timeSpentErrorName);
 
   return isOk;
 }
@@ -205,7 +208,7 @@ function getNewTodo() {
     id: chance.guid(),
     description: getValue(descriptionName),
     estimate: getValue(estimateName),
-    timeSpent: 0
+    timeSpent: getValue(timeSpentName)
   };
 }
 

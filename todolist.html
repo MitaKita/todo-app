@@ -16,7 +16,7 @@
           Add and remove todo items to the todo list.
         </li>
         <li>
-          Click a list item to edit it
+          Click a list item to edit and to see the progress for that item
         </li>
       </ul>
       <div id="formWrapper">
@@ -25,19 +25,25 @@
           <input type="text" class="form-control" id="todoDescription" placeholder="Describe the task to do">
           <label class="error-message not-visible" id="todoDescriptionError">Please, add a description</label>
         </div>
-        <div class="form-group">
-          <label for="todoEstimate">Estimated time (hours)</label>
-          <input type="number" class="form-control" id="todoEstimate" placeholder="Add estimated time to completion">
-          <label class="error-message not-visible" id="todoEstimateError">Please, add an estimate</label>
-        </div>
-        <div class="form-group not-visible" id="timeSpentFormGroup">
-          <label for="todoTimeSpent">Time spent (hours)</label>
-          <input type="number" class="form-control" id="todoTimeSpent">
-          <label class="error-message not-visible" id="odoTimeSpentError">Please, add a value</label>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="todoEstimate">Estimated time (hours)</label>
+              <input type="number" class="form-control" id="todoEstimate" placeholder="Add estimated time to completion">
+              <label class="error-message not-visible" id="todoEstimateError">Please, add an estimate</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group" id="timeSpentFormGroup">
+              <label for="todoTimeSpent">Time spent (hours)</label>
+              <input type="number" class="form-control" id="todoTimeSpent" placeholder="Add time already spent on this task" value="0">
+              <label class="error-message not-visible" id="todoTimeSpentError">Please, add a value</label>
+            </div>
+          </div>
         </div>
         <button class="btn btn-primary add-todo-button" onclick="saveNewTodoItem()" id="addButton">Add</button>
         <button class="btn btn-primary clear-all-button" onclick="clearAll()" id="clearButton">Remove all</button>
-        <button class="btn btn-primary add-todo-button not-visible" onclick="saveEditedTodoItem()" id="editButton">Edit</button>
+        <button class="btn btn-primary add-todo-button not-visible" onclick="saveEditedTodoItem()" id="editButton">Save</button>
         <button class="btn btn-primary add-todo-button not-visible" onclick="cancelEditTodoItem()" id="cancelButton">Cancel</button>
       </div>
       <div class="row">
@@ -45,13 +51,17 @@
           <div id="todoList">
           </div>
         </div>
-        <!--<div class="col-md-6 donut-chart-wrapper">
-          <div class="donut-chart">
-            <svg id="donutChart">
-              
+        <div class="col-md-6 donut-chart-wrapper">
+          <p id="donutTitle"></p>
+          <div id="donutChartWrapper" class="donut-chart not-visible">
+            <svg id="donutChart" width="500" height="500" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg">
+              <circle class="donut-ring" cx="250" cy="70" r="50" fill="transparent" stroke="#337ab7" stroke-width="40"></circle>
+              <circle id="donutSegment" class="donut-segment not-visible" cx="250" cy="70" r="50" fill="transparent" stroke="#468847" stroke-width="40"></circle>
+              <circle class="donut-hole" cx="250" cy="70" r="50" fill="#fff"></circle>
+              <text id="donutText" class="donut-text" x="230" y="75"></text>
             </svg>
           </div>
-        </div>-->
+        </div>
       </div>
       <div class="footer">
         <p>
@@ -64,6 +74,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="http://chancejs.com/chance.min.js"></script>
     <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="donutchart.js"></script>
     <script src="todolist.js"></script>
 
   </body>
