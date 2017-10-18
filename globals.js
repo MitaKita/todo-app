@@ -10,7 +10,7 @@ function getTodosFromLocalStorage() {
 }
 
 function getTodoItem(todoId) {
-  return $.grep(getTodosFromLocalStorage(), function(item) { return item.id === todoId })[0];  
+  return $.grep(getTodosFromLocalStorage(), (item) => { return item.id === todoId })[0];  
 }
 
 function saveToLocalStorage(todos) {
