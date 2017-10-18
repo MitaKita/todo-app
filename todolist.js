@@ -11,7 +11,7 @@ var timeSpentGroupName = 'timeSpentFormGroup';
 
 var descriptionErrorName = 'todoDescriptionError';
 var estimateErrorName = 'todoEstimateError';
-var timeSpentErrorName = 'todoTimeSpentError'
+var timeSpentErrorName = 'todoTimeSpentError';
 
 var editedTodoItemId;
 
@@ -21,7 +21,7 @@ function init() {
 
 function clearAll() {
   localStorage.removeItem('todos')
-  init();
+  $('#todoList').html('');
 }
 
 function buildTodoList() {
@@ -86,10 +86,10 @@ function handleListItemClick(todoId) {
   
   if (!updateItem) return;
 
-  setEditingState();
+  setEditingState(updateItem);
 }
 
-function setEditingState() {
+function setEditingState(updateItem) {
   setValue(descriptionName, updateItem.description);
   setValue(estimateName, updateItem.estimate);
   setValue(timeSpentName, updateItem.timeSpent);
@@ -138,6 +138,7 @@ function saveNewTodoItem() {
   todos.push(getNewTodo());
   saveToLocalStorage(todos);
 
+
   setValue(descriptionName, '');
   setValue(estimateName, '');
 
@@ -178,7 +179,7 @@ function isValid(checkTimeSpent = false) {
 }
 
 function checkElement(elementName, errorName) {
-  var isOk = getValue(elementName);
+  var isOk = getValue(elementName) ? true : false;
 
   if (!isOk) {
     showElement(errorName);
