@@ -41,7 +41,3 @@ function getStrokeDashArray(todoItem) {
 
   return `${spentTimeStrokeSize} ${restStrokeSize}`;
 }
-
-function get(id) {
-  return $(`#${id}`);
-}

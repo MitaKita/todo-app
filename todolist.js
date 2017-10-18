@@ -235,7 +235,3 @@ function hideElement(id) {
 function showElement(id) {
   $(`#${id}`).removeClass('not-visible');
 }
-
-function get(id) {
-  return $(`#${id}`);
-}
