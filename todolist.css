@@ -47,11 +47,11 @@ body {
 }
 
 .badge-estimate {
-  background-color: #3a87ad;
+  background-color: #0C5A80;
 }
 
 .badge-estimate:hover {
-  background-color: #2d6987;
+  background-color: #03405E;
 }
 
 .badge-spent {
@@ -84,9 +84,22 @@ body {
   font-size: 2em;
 }
 
+.donut-ring {
+  stroke: #3a87ad;
+  stroke-width: 40;
+  fill: transparent;
+}
+
 .donut-segment {
   stroke-dasharray: "0 314.15926535897932384626433832795";
-  transition: stroke-dasharray 2s
+  transition: stroke-dasharray 2s;
+  fill: transparent;
+  stroke: #356635;
+  stroke-width: 40;
+}
+
+.donut-hole {
+  fill: #fff;
 }
 
 .dummy-data-link {
