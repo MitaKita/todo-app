@@ -45,7 +45,7 @@ function getPercentageValue(todoItem) {
 
 function getStrokeDashArray(todoItem) {
   var totalTime = todoItem.estimate;
-  var spentTime = todoItem.timeSpent ? todoItem.timeSpent : 0;
+  var spentTime = getTimeSpent(todoItem);
   var timeLeft = totalTime - spentTime;
 
   var spentTimePercentage = spentTime / totalTime;
@@ -55,4 +55,11 @@ function getStrokeDashArray(todoItem) {
   var restStrokeSize = circumference - spentTimeStrokeSize;
 
   return `${spentTimeStrokeSize} ${restStrokeSize}`;
+}
+
+function getTimeSpent(todoItem) {
+  if (todoItem.timeSpent > todoItem.estimate) {
+    return todoItem.estimate;
+  }
+  return todoItem.timeSpent ? todoItem.timeSpent : 0;
 }
