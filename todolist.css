@@ -39,11 +39,11 @@ body {
 }
 
 .badge-done {
-  background-color: #468847;
+  background-color: #356635;
 }
 
 .badge-done:hover {
-  background-color: #356635;
+  background-color: #134E13;
 }
 
 .badge-estimate {
@@ -85,7 +85,7 @@ body {
 }
 
 .donut-ring {
-  stroke: #3a87ad;
+  stroke: #337ab7;
   stroke-width: 40;
   fill: transparent;
 }
