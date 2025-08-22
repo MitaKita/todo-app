@@ -1,5 +1,5 @@
 # To Do List
-App is available at http://maritakontio.com/todo/todolist.html.
+App is available at https://infinite-oasis-47766-1175f45c6e41.herokuapp.com/.
 
 This app can:
 

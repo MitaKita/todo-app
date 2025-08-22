@@ -8,7 +8,7 @@ body {
 }
 
 .footer {
-  position: absolute;
+  position: fixed;
   right: 0;
   bottom: 0;
   left: 0;
@@ -43,15 +43,15 @@ body {
 }
 
 .badge-done:hover {
-  background-color: #134E13;
+  background-color: #134e13;
 }
 
 .badge-estimate {
-  background-color: #0C5A80;
+  background-color: #0c5a80;
 }
 
 .badge-estimate:hover {
-  background-color: #03405E;
+  background-color: #03405e;
 }
 
 .badge-spent {
