@@ -1,7 +1,4 @@
-const Chance = require('chance');
-const chance = new Chance();
-
-const todoListName = 'todoList';
+var todoListName = 'todoList';
 const addButtonName = 'addButton';
 const editButtonName = 'editButton';
 const clearButtonName = 'clearButton';
