@@ -1,20 +1,21 @@
-var todoListName = 'todoList';
-var addButtonName = 'addButton';
-var editButtonName = 'editButton';
-var clearButtonName = 'clearButton';
-var cancelButtonName = 'cancelButton';
+const Chance = require('chance');
+const chance = new Chance();
 
-var descriptionName = 'todoDescription';
-var estimateName = 'todoEstimate';
-var timeSpentName = 'todoTimeSpent';
+const todoListName = 'todoList';
+const addButtonName = 'addButton';
+const editButtonName = 'editButton';
+const clearButtonName = 'clearButton';
+const cancelButtonName = 'cancelButton';
 
-var timeSpentGroupName = 'timeSpentFormGroup';
+const descriptionName = 'todoDescription';
+const estimateName = 'todoEstimate';
+const timeSpentName = 'todoTimeSpent';
 
-var descriptionErrorName = 'todoDescriptionError';
-var estimateErrorName = 'todoEstimateError';
-var timeSpentErrorName = 'todoTimeSpentError';
+const descriptionErrorName = 'todoDescriptionError';
+const estimateErrorName = 'todoEstimateError';
+const timeSpentErrorName = 'todoTimeSpentError';
 
-var editedTodoItemId;
+let editedTodoItemId;
 
 function init() {
   buildTodoList();
@@ -43,14 +44,14 @@ function createTodoList() {
 }
 
 function getTodoListHtml() {
-  var todos = getTodosFromLocalStorage();
-  var innerHtml = '<ul class="list-group">';
+  const todos = getTodosFromLocalStorage();
+  let innerHtml = '<ul class="list-group">';
 
-  for (var i = 0; i < todos.length; i++) {
+  for (let i = 0; i < todos.length; i++) {
     innerHtml += buildListItem(todos[i]);
   }
 
-  innerHtml += '</ul>'
+  innerHtml += '</ul>';
   return innerHtml;
 }
 
@@ -86,8 +87,8 @@ function handleListItemClick(todoId) {
   indicateListItemSelected(todoId);
   editedTodoItemId = todoId;
 
-  var todoList = getTodosFromLocalStorage();
-  var updateItem = getTodoItem(todoId);
+  const todoList = getTodosFromLocalStorage();
+  const updateItem = getTodoItem(todoId);
   
   if (!updateItem) return;
 
@@ -136,7 +137,7 @@ function saveNewTodoItem() {
     return;
   }
 
-  var todos = getTodosFromLocalStorage();
+  const todos = getTodosFromLocalStorage();
   todos.push(getNewTodo());
   saveToLocalStorage(todos);
 
@@ -149,7 +150,7 @@ function saveEditedTodoItem() {
     return;
   }
 
-  var todos = editTodoItem();
+  const todos = editTodoItem();
   saveToLocalStorage(todos);
 
   setInitialState();
@@ -159,14 +160,14 @@ function saveEditedTodoItem() {
 }
 
 function editTodoItem() {
-  var todos = getTodosFromLocalStorage();
-  var index = getIndexFromId(editedTodoItemId);
+  const todos = getTodosFromLocalStorage();
+  const index = getIndexFromId(editedTodoItemId);
   todos[index] = getCurrentTodoValue(editedTodoItemId);
   return todos;
 }
 
 function isValid() {
-  var isOk = true;
+  let isOk = true;
   
   isOk &= checkElement(descriptionName, descriptionErrorName);
   isOk &= checkElement(estimateName, estimateErrorName);
@@ -176,7 +177,7 @@ function isValid() {
 }
 
 function checkElement(elementName, errorName) {
-  var isOk = getValue(elementName) ? true : false;
+  const isOk = getValue(elementName) ? true : false;
 
   if (!isOk) {
     showElement(errorName);
@@ -227,7 +228,7 @@ function showElement(id) {
 }
 
 function loadDummyData() {
-  var todos = getTodosFromLocalStorage();
+  let todos = getTodosFromLocalStorage();
   todos = addDummyData(todos);
   saveToLocalStorage(todos);
   init();

@@ -1,12 +1,12 @@
-var donutChartWrapperName = 'donutChartWrapper';
-var donutTitleName = 'donutTitle';
-var donutTextName = 'donutText';
-var donutSegmentName = 'donutSegment';
+const donutChartWrapperName = 'donutChartWrapper';
+const donutTitleName = 'donutTitle';
+const donutTextName = 'donutText';
+const donutSegmentName = 'donutSegment';
 
-var circumference = 50 * 2 * Math.PI;
-var strokeDashOffset = circumference * 0.5;
+const circumference = 50 * 2 * Math.PI;
+const strokeDashOffset = circumference * 0.5;
 
-var currentTodoItem;
+let currentTodoItem;
 
 function hideDonut() {
   hideElement(donutChartWrapperName);
@@ -24,13 +24,13 @@ function showDonut(todoItem) {
   get(donutTitleName).html(`Progress for: ${todoItem.description}`);
   showElement(donutChartWrapperName);
 
-  var donutText = get(donutTextName).html(getDonutText(todoItem));
+  const donutText = get(donutTextName).html(getDonutText(todoItem));
 
-  var donutSegment = get(donutSegmentName);
+  const donutSegment = get(donutSegmentName);
   donutSegment.css({
     'stroke-dasharray': getStrokeDashArray(todoItem),
     'stroke-dashoffset': strokeDashOffset
-  })
+  });
   showElement(donutSegmentName);
 }
 
@@ -39,20 +39,20 @@ function getDonutText(todoItem) {
 }
 
 function getPercentageValue(todoItem) {
-  var rawValue = Math.round(todoItem.timeSpent / todoItem.estimate * 100);
+  const rawValue = Math.round(todoItem.timeSpent / todoItem.estimate * 100);
   return (rawValue > 100) ? 100 : rawValue;
 }
 
 function getStrokeDashArray(todoItem) {
-  var totalTime = todoItem.estimate;
-  var spentTime = getTimeSpent(todoItem);
-  var timeLeft = totalTime - spentTime;
+  const totalTime = todoItem.estimate;
+  const spentTime = getTimeSpent(todoItem);
+  const timeLeft = totalTime - spentTime;
 
-  var spentTimePercentage = spentTime / totalTime;
-  var timeLeftPercentage = timeLeft / totalTime;
+  const spentTimePercentage = spentTime / totalTime;
+  const timeLeftPercentage = timeLeft / totalTime;
 
-  var spentTimeStrokeSize = circumference * spentTimePercentage;
-  var restStrokeSize = circumference - spentTimeStrokeSize;
+  const spentTimeStrokeSize = circumference * spentTimePercentage;
+  const restStrokeSize = circumference - spentTimeStrokeSize;
 
   return `${spentTimeStrokeSize} ${restStrokeSize}`;
 }
