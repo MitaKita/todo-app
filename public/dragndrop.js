@@ -19,7 +19,7 @@ function move(sourceId, targetId, before) {
 
   removeFromLocalStorage(getIndexFromId(sourceId)).then(() => {
     insertMovedItem(movedItem, getIndexFromId(targetId), before).then(() => {
-      init();
+      buildTodoList();
     });
   });
 }

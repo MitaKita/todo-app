@@ -15,7 +15,14 @@ const timeSpentErrorName = 'todoTimeSpentError';
 let editedTodoItemId;
 
 function init() {
+  addClickListener('loadDummyDataLink', loadDummyData);
+  addClickListener('addButton', saveNewTodoItem);
   buildTodoList();
+}
+
+function addClickListener(id, eventHandler) {
+  const button = document.getElementById(id);
+  button.addEventListener('click', eventHandler);
 }
 
 function clearAll() {
@@ -126,20 +133,21 @@ function setInitialState() {
 
 function handleRemove(id) {
   removeFromLocalStorage(getIndexFromId(id));
-  init();
+  buildTodoList();
 }
 
-function saveNewTodoItem() {
+async function saveNewTodoItem() {
   if (!isValid()) {
     return;
   }
 
   const todos = getTodosFromLocalStorage();
-  todos.push(getNewTodo());
+  const newId = await getNewIdAsync();
+  todos.push(getNewTodo(newId));
   saveToLocalStorage(todos);
 
   setInitialState();
-  init();
+  buildTodoList();
 }
 
 function saveEditedTodoItem() {
@@ -153,7 +161,7 @@ function saveEditedTodoItem() {
   setInitialState();
 
   updateDonut();
-  init();
+  buildTodoList();
 }
 
 function editTodoItem() {
@@ -191,13 +199,14 @@ function clearErrors() {
   hideElement(timeSpentErrorName);
 }
 
-function getNewTodo() {
-  return getCurrentTodoValue(getNewId());
+function getNewTodo(id) {
+  return getCurrentTodoValue(id);
 }
 
-function getNewId() {
-  return chance.guid();
-}
+// function getNewId() {
+//   getNewIdAsync()
+//   return 403
+// }
 
 function getCurrentTodoValue(id) {
   return {
@@ -224,48 +233,80 @@ function showElement(id) {
   $(`#${id}`).removeClass('not-visible');
 }
 
-function loadDummyData() {
+async function loadDummyData() {
   let todos = getTodosFromLocalStorage();
-  todos = addDummyData(todos);
+  todos = await addDummyData(todos);
   saveToLocalStorage(todos);
-  init();
+  buildTodoList();
 }
 
-function addDummyData(todos) {
-  todos.push.apply(todos, getDummyData());
+async function addDummyData(todos) {
+  const data = await getDummyDataAsync();
+  todos.push.apply(todos, data);
   return todos;
 }
-function getDummyData() {
-  return [
-    {
-      id: getNewId(),
-      description: 'Write a book',
-      estimate: 200,
-      timeSpent: 30
-    },
-    {
-      id: getNewId(),
-      description: 'Build a house',
-      estimate: 300,
-      timeSpent: 40
-    },
-    {
-      id: getNewId(),
-      description: 'Drive across the country',
-      estimate: 80,
-      timeSpent: 30
-    },
-    {
-      id: getNewId(),
-      description: 'Watch a movie',
-      estimate: 1.5,
-      timeSpent: 0.5
-    },
-    {
-      id: getNewId(),
-      description: 'Do the dishes',
-      estimate: 0.5,
-      timeSpent: 0
-    }
-  ];
+
+async function getNewIdAsync() {
+  const response = await fetch('/unique-id');
+  if (!response.ok) {
+    throw new Error('Failed to fetch unique id');
+  }
+  const data = await response.json();
+  return data.id;
 }
+
+async function getData(desc, estimate, timeSpent) {
+  const id = await getNewIdAsync();
+  return {
+    id,
+    description: desc,
+    estimate: estimate,
+    timeSpent: timeSpent
+  };
+}
+
+async function getDummyDataAsync() {
+  const data = async () => [
+    await getData('Write a book', 200, 30),
+    await getData('Build a house', 300, 40),
+    await getData('Drive across the country', 80, 30),
+    await getData('Watch a movie', 1.5, 0.5),
+    await getData('Do the dishes', 0.5, 0)
+  ];
+  return data();
+}
+
+// function getDummyData() {
+//   return [
+//     {
+//       id: getNewId(),
+//       description: 'Write a book',
+//       estimate: 200,
+//       timeSpent: 30
+//     },
+//     {
+//       id: getNewId(),
+//       description: 'Build a house',
+//       estimate: 300,
+//       timeSpent: 40
+//     },
+//     {
+//       id: getNewId(),
+//       description: 'Drive across the country',
+//       estimate: 80,
+//       timeSpent: 30
+//     },
+//     {
+//       id: getNewId(),
+//       description: 'Watch a movie',
+//       estimate: 1.5,
+//       timeSpent: 0.5
+//     },
+//     {
+//       id: getNewId(),
+//       description: 'Do the dishes',
+//       estimate: 0.5,
+//       timeSpent: 0
+//     }
+//   ];
+// }
