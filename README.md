@@ -1,5 +1,5 @@
 # To Do List
-App is available at https://infinite-oasis-47766-1175f45c6e41.herokuapp.com/.
+App is available at https://todo-app-inky-iota-32.vercel.app/.
 
 This app can:
 
