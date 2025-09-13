@@ -25,7 +25,8 @@
         Drag and drop items to reorder the list
       </li>
       <li>
-        Click <a href="#" onclick="loadDummyData()" class="dummy-data-link">here</a> to load dummy data
+        Click <a href="#" id="loadDummyDataLink" class="dummy-data-link">here</a> to load
+        dummy data
       </li>
     </ul>
     <div id="formWrapper">
@@ -51,7 +52,7 @@
           </div>
         </div>
       </div>
-      <button class="btn btn-primary add-todo-button" onclick="saveNewTodoItem()" id="addButton">Add</button>
+      <button class="btn btn-primary add-todo-button" id="addButton">Add</button>
       <button class="btn btn-primary clear-all-button" onclick="clearAll()" id="clearButton">Remove all</button>
       <button class="btn btn-primary add-todo-button not-visible" onclick="saveEditedTodoItem()"
         id="editButton">Save</button>

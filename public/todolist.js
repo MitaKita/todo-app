@@ -1,23 +1,28 @@
 var todoListName = 'todoList';
-var addButtonName = 'addButton';
-var editButtonName = 'editButton';
-var clearButtonName = 'clearButton';
-var cancelButtonName = 'cancelButton';
+const addButtonName = 'addButton';
+const editButtonName = 'editButton';
+const clearButtonName = 'clearButton';
+const cancelButtonName = 'cancelButton';
 
-var descriptionName = 'todoDescription';
-var estimateName = 'todoEstimate';
-var timeSpentName = 'todoTimeSpent';
+const descriptionName = 'todoDescription';
+const estimateName = 'todoEstimate';
+const timeSpentName = 'todoTimeSpent';
 
-var timeSpentGroupName = 'timeSpentFormGroup';
+const descriptionErrorName = 'todoDescriptionError';
+const estimateErrorName = 'todoEstimateError';
+const timeSpentErrorName = 'todoTimeSpentError';
 
-var descriptionErrorName = 'todoDescriptionError';
-var estimateErrorName = 'todoEstimateError';
-var timeSpentErrorName = 'todoTimeSpentError';
-
-var editedTodoItemId;
+let editedTodoItemId;
 
 function init() {
+  addClickListener('loadDummyDataLink', loadDummyData);
+  addClickListener('addButton', saveNewTodoItem);
   buildTodoList();
+}
+
+function addClickListener(id, eventHandler) {
+  const button = document.getElementById(id);
+  button.addEventListener('click', eventHandler);
 }
 
 function clearAll() {
@@ -43,14 +48,14 @@ function createTodoList() {
 }
 
 function getTodoListHtml() {
-  var todos = getTodosFromLocalStorage();
-  var innerHtml = '<ul class="list-group">';
+  const todos = getTodosFromLocalStorage();
+  let innerHtml = '<ul class="list-group">';
 
-  for (var i = 0; i < todos.length; i++) {
+  for (let i = 0; i < todos.length; i++) {
     innerHtml += buildListItem(todos[i]);
   }
 
-  innerHtml += '</ul>'
+  innerHtml += '</ul>';
   return innerHtml;
 }
 
@@ -86,8 +91,8 @@ function handleListItemClick(todoId) {
   indicateListItemSelected(todoId);
   editedTodoItemId = todoId;
 
-  var todoList = getTodosFromLocalStorage();
-  var updateItem = getTodoItem(todoId);
+  const todoList = getTodosFromLocalStorage();
+  const updateItem = getTodoItem(todoId);
   
   if (!updateItem) return;
 
@@ -128,20 +133,21 @@ function setInitialState() {
 
 function handleRemove(id) {
   removeFromLocalStorage(getIndexFromId(id));
-  init();
+  buildTodoList();
 }
 
-function saveNewTodoItem() {
+async function saveNewTodoItem() {
   if (!isValid()) {
     return;
   }
 
-  var todos = getTodosFromLocalStorage();
-  todos.push(getNewTodo());
+  const todos = getTodosFromLocalStorage();
+  const newId = await getNewIdAsync();
+  todos.push(getNewTodo(newId));
   saveToLocalStorage(todos);
 
   setInitialState();
-  init();
+  buildTodoList();
 }
 
 function saveEditedTodoItem() {
@@ -149,24 +155,24 @@ function saveEditedTodoItem() {
     return;
   }
 
-  var todos = editTodoItem();
+  const todos = editTodoItem();
   saveToLocalStorage(todos);
 
   setInitialState();
 
   updateDonut();
-  init();
+  buildTodoList();
 }
 
 function editTodoItem() {
-  var todos = getTodosFromLocalStorage();
-  var index = getIndexFromId(editedTodoItemId);
+  const todos = getTodosFromLocalStorage();
+  const index = getIndexFromId(editedTodoItemId);
   todos[index] = getCurrentTodoValue(editedTodoItemId);
   return todos;
 }
 
 function isValid() {
-  var isOk = true;
+  let isOk = true;
   
   isOk &= checkElement(descriptionName, descriptionErrorName);
   isOk &= checkElement(estimateName, estimateErrorName);
@@ -176,7 +182,7 @@ function isValid() {
 }
 
 function checkElement(elementName, errorName) {
-  var isOk = getValue(elementName) ? true : false;
+  const isOk = getValue(elementName) ? true : false;
 
   if (!isOk) {
     showElement(errorName);
@@ -193,13 +199,14 @@ function clearErrors() {
   hideElement(timeSpentErrorName);
 }
 
-function getNewTodo() {
-  return getCurrentTodoValue(getNewId());
+function getNewTodo(id) {
+  return getCurrentTodoValue(id);
 }
 
-function getNewId() {
-  return chance.guid();
-}
+// function getNewId() {
+//   getNewIdAsync()
+//   return 403
+// }
 
 function getCurrentTodoValue(id) {
   return {
@@ -226,48 +233,80 @@ function showElement(id) {
   $(`#${id}`).removeClass('not-visible');
 }
 
-function loadDummyData() {
-  var todos = getTodosFromLocalStorage();
-  todos = addDummyData(todos);
+async function loadDummyData() {
+  let todos = getTodosFromLocalStorage();
+  todos = await addDummyData(todos);
   saveToLocalStorage(todos);
-  init();
+  buildTodoList();
 }
 
-function addDummyData(todos) {
-  todos.push.apply(todos, getDummyData());
+async function addDummyData(todos) {
+  const data = await getDummyDataAsync();
+  todos.push.apply(todos, data);
   return todos;
 }
-function getDummyData() {
-  return [
-    {
-      id: getNewId(),
-      description: 'Write a book',
-      estimate: 200,
-      timeSpent: 30
-    },
-    {
-      id: getNewId(),
-      description: 'Build a house',
-      estimate: 300,
-      timeSpent: 40
-    },
-    {
-      id: getNewId(),
-      description: 'Drive across the country',
-      estimate: 80,
-      timeSpent: 30
-    },
-    {
-      id: getNewId(),
-      description: 'Watch a movie',
-      estimate: 1.5,
-      timeSpent: 0.5
-    },
-    {
-      id: getNewId(),
-      description: 'Do the dishes',
-      estimate: 0.5,
-      timeSpent: 0
-    }
-  ];
+
+async function getNewIdAsync() {
+  const response = await fetch('/unique-id');
+  if (!response.ok) {
+    throw new Error('Failed to fetch unique id');
+  }
+  const data = await response.json();
+  return data.id;
 }
+
+async function getData(desc, estimate, timeSpent) {
+  const id = await getNewIdAsync();
+  return {
+    id,
+    description: desc,
+    estimate: estimate,
+    timeSpent: timeSpent
+  };
+}
+
+async function getDummyDataAsync() {
+  const data = async () => [
+    await getData('Write a book', 200, 30),
+    await getData('Build a house', 300, 40),
+    await getData('Drive across the country', 80, 30),
+    await getData('Watch a movie', 1.5, 0.5),
+    await getData('Do the dishes', 0.5, 0)
+  ];
+  return data();
+}
+
+// function getDummyData() {
+//   return [
+//     {
+//       id: getNewId(),
+//       description: 'Write a book',
+//       estimate: 200,
+//       timeSpent: 30
+//     },
+//     {
+//       id: getNewId(),
+//       description: 'Build a house',
+//       estimate: 300,
+//       timeSpent: 40
+//     },
+//     {
+//       id: getNewId(),
+//       description: 'Drive across the country',
+//       estimate: 80,
+//       timeSpent: 30
+//     },
+//     {
+//       id: getNewId(),
+//       description: 'Watch a movie',
+//       estimate: 1.5,
+//       timeSpent: 0.5
+//     },
+//     {
+//       id: getNewId(),
+//       description: 'Do the dishes',
+//       estimate: 0.5,
+//       timeSpent: 0
+//     }
+//   ];
+// }

@@ -1,11 +1,11 @@
-var todoListKey = 'todos';
+const todoListKey = 'todos';
 
 function get(id) {
   return $(`#${id}`);
 }
 
 function getTodosFromLocalStorage() {
-  var todoItemList = localStorage.getItem(todoListKey);
+  const todoItemList = localStorage.getItem(todoListKey);
   return todoItemList ? JSON.parse(todoItemList) : [];
 }
 
@@ -25,7 +25,7 @@ function saveToLocalStorage(todos) {
 }
 
 function getIndexFromId(id) {
-  var todoList = getTodosFromLocalStorage();
+  const todoList = getTodosFromLocalStorage();
   return todoList.findIndex((element) => {
     return element.id === id;
   });
@@ -34,7 +34,7 @@ function getIndexFromId(id) {
 function removeFromLocalStorage(index) {
   return $.Deferred((defer) => {
     try {
-      var todos = getTodosFromLocalStorage();
+      const todos = getTodosFromLocalStorage();
       todos.splice(index, 1);
       localStorage.setItem(todoListKey, JSON.stringify(todos));
       defer.resolve();
