@@ -7,3 +7,5 @@ This app can:
 * Click a list item to edit and to see the progress for that item
 * Drag and drop items to reorder the list
 * Load dummy data with a mouse click
+
+A lightweight web application built entirely with vanilla JavaScript. After years of developing with frameworks like React and Angular, this project is a back-to-basics exploration focusing on native web APIs and zero-dependency architecture.
